@@ -36,10 +36,14 @@ class Game:
 
     # ajoute un joueur avec le nom donné à la partfie
     def add(self, player_name):
+        if self.how_many_players >= 6 :
+            print("The maximum of players is 6")
+            return
+
         self.players.append(player_name)
-        self.places[self.how_many_players] = 0
-        self.purses[self.how_many_players] = 0
-        self.in_penalty_box[self.how_many_players] = False
+        self.places[self.how_many_players - 1] = 0
+        self.purses[self.how_many_players - 1] = 0
+        self.in_penalty_box[self.how_many_players - 1] = False
 
         print(player_name + " was added")
         print("They are player number %s" % len(self.players))
@@ -175,6 +179,11 @@ if __name__ == "__main__":
     game.add("Chet")
     game.add("Pat")
     game.add("Sue")
+
+    # Vérifie que le nombre de joueurs est supérieur à 1
+    if not game.is_playable():
+        print("The game doesn't have at least 2 players")
+        quit()
 
     while True:
         game.roll(randrange(5) + 1)
