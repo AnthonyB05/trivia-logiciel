@@ -16,6 +16,7 @@ class Game:
         self.science_questions = []
         self.sports_questions = []
         self.rock_questions = []
+        self.techno_question = []
 
         self.current_player = 0
         self.is_getting_out_of_penalty_box = False
@@ -24,13 +25,12 @@ class Game:
             self.pop_questions.append("Pop Question %s" % i)
             self.science_questions.append("Science Question %s" % i)
             self.sports_questions.append("Sports Question %s" % i)
-            self.rock_questions.append(self.create_rock_question(i))
+            if technoRockQuest == "y":
+                self.techno_question.append("Techno Question %s" % i)
+            else:
+                self.rock_questions.append("Rock Question %s" % i)
 
-    # renvoie une question de rock avec l'index donné
-    def create_rock_question(self, index):
-        return "Rock Question %s" % index
-
-    # renvoie vrai si la partie à au moins 2 joueurs
+    # TODO : méthode inutile
     def is_playable(self):
         return self.how_many_players >= 2
 
@@ -169,7 +169,7 @@ from random import randrange
 
 if __name__ == "__main__":
     not_a_winner = False
-
+    technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
     game = Game()
 
     game.add("Chet")
