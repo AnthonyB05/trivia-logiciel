@@ -21,15 +21,11 @@ class Game:
             self.science_questions.append("Science Question %s" % i)
             self.sports_questions.append("Sports Question %s" % i)
             if(technoRockQuest=="y"):
-               self.techno_question.append(self.create_techno_question(i))
+               self.techno_question.append("Techno Question %s"% i)
             else:
-                self.rock_questions.append(self.create_rock_question(i))
+                self.rock_questions.append("Rock Question %s" %i)
 
-    def create_techno_question(self,index):
-        return "Techno Question %s" % index
-    def create_rock_question(self, index):
-        return "Rock Question %s" % index
-
+    #TODO : méthode inutile
     def is_playable(self):
         return self.how_many_players >= 2
 
