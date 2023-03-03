@@ -96,6 +96,8 @@ class Game:
             print(self.sports_questions.pop(0))
         if self._current_category == "Rock":
             print(self.rock_questions.pop(0))
+        if self._current_category=="Techno":
+            print(self.techno_question.pop(0))
 
     # renvoie la categorie pour la case sur laquelle le joueur est actuellement
     @property
@@ -118,7 +120,10 @@ class Game:
             return "Sports"
         if self.places[self.current_player] == 10:
             return "Sports"
-        return "Rock"
+        if(technoRockQuest=="y"):
+            return "Techno"
+        else:
+            return "Rock"
 
     # appelé quand une question a été répondu correctement, met à jour la bourse du joueur et vérifie s'il a gagné la partie
     def was_correctly_answered(self):
