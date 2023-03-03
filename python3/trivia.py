@@ -11,6 +11,7 @@ class Game:
         self.science_questions = []
         self.sports_questions = []
         self.rock_questions = []
+        self.techno_question = []
 
         self.current_player = 0
         self.is_getting_out_of_penalty_box = False
@@ -19,8 +20,13 @@ class Game:
             self.pop_questions.append("Pop Question %s" % i)
             self.science_questions.append("Science Question %s" % i)
             self.sports_questions.append("Sports Question %s" % i)
-            self.rock_questions.append(self.create_rock_question(i))
+            if(technoRockQuest=="y"):
+               self.techno_question.append(self.create_techno_question(i))
+            else:
+                self.rock_questions.append(self.create_rock_question(i))
 
+    def create_techno_question(self,index):
+        return "Techno Question %s" % index
     def create_rock_question(self, index):
         return "Rock Question %s" % index
 
@@ -79,6 +85,7 @@ class Game:
         if self._current_category == 'Science': print(self.science_questions.pop(0))
         if self._current_category == 'Sports': print(self.sports_questions.pop(0))
         if self._current_category == 'Rock': print(self.rock_questions.pop(0))
+        if self._current_category == 'Techno': print(self.techno_question.pop(0))
 
     @property
     def _current_category(self):
@@ -91,7 +98,10 @@ class Game:
         if self.places[self.current_player] == 2: return 'Sports'
         if self.places[self.current_player] == 6: return 'Sports'
         if self.places[self.current_player] == 10: return 'Sports'
-        return 'Rock'
+        if(technoRockQuest=="y"):
+            return 'Techno'
+        else:
+            return 'Rock'
 
     def was_correctly_answered(self):
         if self.in_penalty_box[self.current_player]:
@@ -147,7 +157,7 @@ from random import randrange
 
 if __name__ == '__main__':
     not_a_winner = False
-
+    technoRockQuest=input("Do you want a techno question insted a rock question ? (y/n)")
     game = Game()
 
     game.add('Chet')
