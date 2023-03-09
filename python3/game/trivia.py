@@ -23,7 +23,7 @@ class Game:
         self.is_getting_out_of_penalty_box = False
 
         self.technoRockQuest = technoRockQuest
-
+        self.wantContinue = "y"
         for i in range(50):
             self.pop_questions.append("Pop Question %s" % i)
             self.science_questions.append("Science Question %s" % i)
@@ -102,7 +102,11 @@ class Game:
             print(self.rock_questions.pop(0))
         if self._current_category=="Techno":
             print(self.techno_question.pop(0))
+        self.wantAnswer()
 
+    def wantAnswer(self):
+        self.wantContinue = input("Do you want to anwser ? ;y/n ")
+        
     # renvoie la categorie pour la case sur laquelle le joueur est actuellement
     @property
     def _current_category(self):
@@ -187,8 +191,9 @@ class Game:
         self.can_game_start()
         while True:
             self.roll(randrange(5) + 1)
-
-            if randrange(9) == 7:
+            if self.wantContinue == "n": 
+                return False
+            elif randrange(9) == 7:
                 not_a_winner = self.wrong_answer()
             else:
                 not_a_winner = self.was_correctly_answered()
