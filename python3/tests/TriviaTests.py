@@ -32,7 +32,7 @@ class TriviaTest(unittest.TestCase):
             technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
             trivia.technoRockQuest = technoRockQuest
             trivia.not_a_winner = not_a_winner
-            game = trivia.Game()
+            game = trivia.Game(technoRockQuest)
             game.add('Chet')
             game.add('Pat')
             self.play_game(game)
@@ -42,23 +42,23 @@ class TriviaTest(unittest.TestCase):
         self.assertTrue(isOk)
 
     def test_add_two_players(self):
-        not_a_winner = False
-        technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
-        trivia.technoRockQuest = technoRockQuest
-        trivia.not_a_winner = not_a_winner
-        game = trivia.Game()
-        game.add('Chet')
-        game.add('Pat')
-        self.play_game(game)
+        game = trivia.Game("y")
 
-        self.assertEqual(2, game.how_many_players())
+        game.add("Chet")
+        game.add("Pat")
+
+        game.start()
+
+        numbers = game.how_many_players()
+
+        self.assertEqual(2, numbers)
 
     def test_game_one_player(self):
         not_a_winner = False
         technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
         trivia.technoRockQuest = technoRockQuest
         trivia.not_a_winner = not_a_winner
-        game = trivia.Game()
+        game = trivia.Game(technoRockQuest)
         game.add('Chet')
         self.play_game(game)
 
@@ -69,7 +69,7 @@ class TriviaTest(unittest.TestCase):
         technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
         trivia.technoRockQuest = technoRockQuest
         trivia.not_a_winner = not_a_winner
-        game = trivia.Game()
+        game = trivia.Game(technoRockQuest)
         game.add('Chet')
         game.add('Pat')
         self.play_game(game)
