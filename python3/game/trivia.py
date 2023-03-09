@@ -7,12 +7,16 @@ class Game:
     # Intialise la game en créant des tableaux pour suivre les joueurs, leurs emplacements,
     # leurs argents, et s'ils sont dans la penalty box.
     # Crée notamment un tableau de questions pour chaque catégorie et mets joueurs actuel à 0
+    joker=False
     def __init__(self, technoRockQuest):
+        self.use=False
+        self.jok=True
+ 
         self.players = []
         self.places = [0] * 6
         self.purses = [0] * 6
         self.in_penalty_box = [0] * 6
-
+       # self.verifJokeruse(use)
         self.pop_questions = []
         self.science_questions = []
         self.sports_questions = []
@@ -102,10 +106,18 @@ class Game:
         if self._current_category=="Techno":
             print(self.techno_question.pop(0))
         self.wantAnswer()
+        self.askJoker()
 
     def wantAnswer(self):
-        self.wantContinue = input("Do you want to anwser ? ;y/n ")
-        
+        self.wantContinue = input("Do you want to anwser ? (y/n) ")
+
+    def askJoker(self):
+        if self.jok == True:
+            respons = input("Do you want to use the joker ?")
+            if respons =='y':
+                self.jok = False
+                self.use = True
+
     # renvoie la categorie pour la case sur laquelle le joueur est actuellement
     @property
     def _current_category(self):
@@ -164,6 +176,27 @@ class Game:
 
             return winner
 
+    
+
+
+
+    #def jokerr(self):
+      #  yes=""
+       # if(self.use==False):
+        #    yes= input("Voulez vous utiliser un joker ?(y/n)")
+        #if(yes=="y"and self.use==False):
+        #    jok=True
+        #    print("Le joker à été utilisé aucun coins sera distribués")
+        #    self.use=True
+        #else :
+        #    jok=False
+        #    self.use=False
+        #return jok
+        #
+    #def jokerUse(self):
+       
+#        return self.use
+
     # appelé quand le joueur donne une mauvaise réponse
     # on l'envoie a la penalty box et passe au prochain joueur
     def wrong_answer(self):
@@ -192,13 +225,17 @@ class Game:
             self.roll(randrange(5) + 1)
             if self.wantContinue == "n": 
                 return False
-            elif randrange(9) == 7:
-                not_a_winner = self.wrong_answer()
+            elif self.use==False:     
+                    if randrange(9) == 7:
+                        not_a_winner = self.wrong_answer()
+                    else:
+                        not_a_winner = self.was_correctly_answered()
+                    if not not_a_winner:
+                        break
             else:
-                not_a_winner = self.was_correctly_answered()
+                    print("You use the joker so u did't earn any coins")
+                    self.use = False
 
-            if not not_a_winner:
-                break
 
 
 from random import randrange
