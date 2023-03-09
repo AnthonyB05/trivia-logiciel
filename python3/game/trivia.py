@@ -204,7 +204,9 @@ if __name__ == "__main__":
     technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
     game = Game(technoRockQuest)
 
-    game.add("Chet")
+    game.add("test")
+    game.add("test1")
+    game.add("test2")
 
 
     game.start()
