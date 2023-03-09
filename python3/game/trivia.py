@@ -21,11 +21,13 @@ class Game:
         self.current_player = 0
         self.is_getting_out_of_penalty_box = False
 
+        self.technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
+
         for i in range(50):
             self.pop_questions.append("Pop Question %s" % i)
             self.science_questions.append("Science Question %s" % i)
             self.sports_questions.append("Sports Question %s" % i)
-            if technoRockQuest == "y":
+            if self.technoRockQuest == "y":
                 self.techno_question.append("Techno Question %s" % i)
             else:
                 self.rock_questions.append("Rock Question %s" % i)
@@ -120,7 +122,7 @@ class Game:
             return "Sports"
         if self.places[self.current_player] == 10:
             return "Sports"
-        if(technoRockQuest=="y"):
+        if(self.technoRockQuest=="y"):
             return "Techno"
         else:
             return "Rock"
@@ -173,22 +175,22 @@ class Game:
     def _did_player_win(self):
         return not (self.purses[self.current_player] == 6)
 
+    # Vérifie que le nombre de joueurs est supérieur à 1
+    def can_game_start(self):
+        if not game.is_playable():
+            print("The game doesn't have at least 2 players")
+            quit()
+
 
 from random import randrange
 
 if __name__ == "__main__":
     not_a_winner = False
-    technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
     game = Game()
 
     game.add("Chet")
     game.add("Pat")
     game.add("Sue")
-
-    # Vérifie que le nombre de joueurs est supérieur à 1
-    if not game.is_playable():
-        print("The game doesn't have at least 2 players")
-        quit()
 
     while True:
         game.roll(randrange(5) + 1)
