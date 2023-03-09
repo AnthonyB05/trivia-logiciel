@@ -8,6 +8,8 @@ class TriviaTest(unittest.TestCase):
         isOk = True
         try:
             game = trivia.Game()
+            game.add('Chet')
+            game.add('Pat')
         except:
             isOk = False
 
@@ -25,6 +27,19 @@ class TriviaTest(unittest.TestCase):
         game.add('Pat')
 
         self.assertEqual(2, game.how_many_players())
+
+    def test_game_one_player(self):
+        game = trivia.Game()
+        game.add('Chet')
+
+        self.assertFalse(game.is_playable())
+
+    def test_game_two_players(self):
+        game = trivia.Game()
+        game.add('Chet')
+        game.add('Pat')
+
+        self.assertTrue(game.is_playable())
 
 if __name__ == '__main__':
     unittest.main()
