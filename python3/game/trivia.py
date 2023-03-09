@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 
 
 class Game:
@@ -177,12 +178,12 @@ class Game:
 
     # Vérifie que le nombre de joueurs est supérieur à 1
     def can_game_start(self):
-        if not game.is_playable():
-            print("The game doesn't have at least 2 players")
-            quit()
+        if not self.is_playable():
+            sys.exit("The game doesn't have at least 2 players")
 
     def start(self):
         not_a_winner = False
+        self.can_game_start()
         while True:
             self.roll(randrange(5) + 1)
 
@@ -203,7 +204,6 @@ if __name__ == "__main__":
     game = Game(technoRockQuest)
 
     game.add("Chet")
-    game.add("Pat")
-    game.add("Sue")
+
 
     game.start()
