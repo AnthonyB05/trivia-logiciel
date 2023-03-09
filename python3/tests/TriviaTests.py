@@ -46,5 +46,21 @@ class TriviaTest(unittest.TestCase):
 
         self.assertEqual(game.how_many_players, 6)
 
+    def test_game_rock_question(self):
+        game = trivia.Game("n")
+
+        game.add("Chet")
+        game.add("Pat")
+
+        self.assertTrue(len(game.rock_questions) > 0)
+
+    def test_game_techno_question(self):
+        game = trivia.Game("y")
+
+        game.add("Chet")
+        game.add("Pat")
+
+        self.assertTrue(len(game.techno_question) > 0)
+
 if __name__ == '__main__':
     unittest.main()
