@@ -110,7 +110,14 @@ class Game:
         self.askJoker()
 
     def wantAnswer(self):
-        self.wantContinue = input("Do you want to anwser ? ;y/n ")
+        self.wantContinue = input("Do you want to anwser ? (y/n) ")
+
+    def askJoker(self):
+        if self.jok == True:
+            respons = input("Do you want to use the joker ?")
+            if respons =='y':
+                self.jok = False
+                self.use = True
 
     # renvoie la categorie pour la case sur laquelle le joueur est actuellement
     @property
@@ -170,12 +177,7 @@ class Game:
 
             return winner
 
-    def askJoker(self):
-        if self.jok == True:
-            respons = input("want ?")
-            if respons =='y':
-                self.jok = False
-                self.use = True
+    
 
 
 
@@ -222,18 +224,18 @@ class Game:
         self.can_game_start()
         while True:
             self.roll(randrange(5) + 1)
-            if(self.use==False):                if self.wantContinue == "n": 
+            if self.wantContinue == "n": 
                 return False
-            elif randrange(9) == 7:
-                    not_a_winner = self.wrong_answer()
-                
-                else:
-                     not_a_winner = self.was_correctly_answered()
-
-                if not not_a_winner:
-                    break
+            elif self.use==False:     
+                    if randrange(9) == 7:
+                        not_a_winner = self.wrong_answer()
+                    else:
+                        not_a_winner = self.was_correctly_answered()
+                    if not not_a_winner:
+                        break
             else:
-                print("proute je l'use")
+                    print("You use the joker so u did't earn any coins")
+                    self.use = False
 
 
 
