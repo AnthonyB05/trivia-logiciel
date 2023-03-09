@@ -69,6 +69,7 @@ class Game:
                 self.is_getting_out_of_penalty_box = True
 
                 print("%s is getting out of the penalty box" % self.players[self.current_player])
+                self.in_penalty_box[self.current_player] = False
                 self.places[self.current_player] = self.places[self.current_player] + roll
                 if self.places[self.current_player] > 11:
                     self.places[self.current_player] = self.places[self.current_player] - 12
