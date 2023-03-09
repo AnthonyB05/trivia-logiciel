@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 
 
 class Game:
@@ -6,7 +7,7 @@ class Game:
     # Intialise la game en créant des tableaux pour suivre les joueurs, leurs emplacements,
     # leurs argents, et s'ils sont dans la penalty box.
     # Crée notamment un tableau de questions pour chaque catégorie et mets joueurs actuel à 0
-    def __init__(self):
+    def __init__(self, technoRockQuest):
         self.players = []
         self.places = [0] * 6
         self.purses = [0] * 6
@@ -21,7 +22,7 @@ class Game:
         self.current_player = 0
         self.is_getting_out_of_penalty_box = False
 
-        self.technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
+        self.technoRockQuest = technoRockQuest
 
         for i in range(50):
             self.pop_questions.append("Pop Question %s" % i)
@@ -178,19 +179,19 @@ class Game:
 
     # Vérifie que le nombre de joueurs est supérieur à 1
     def can_game_start(self):
-        if not game.is_playable():
-            print("The game doesn't have at least 2 players")
-            quit()
+        if not self.is_playable():
+            sys.exit("The game doesn't have at least 2 players")
 
     def start(self):
         not_a_winner = False
+        self.can_game_start()
         while True:
-            game.roll(randrange(5) + 1)
+            self.roll(randrange(5) + 1)
 
             if randrange(9) == 7:
-                not_a_winner = game.wrong_answer()
+                not_a_winner = self.wrong_answer()
             else:
-                not_a_winner = game.was_correctly_answered()
+                not_a_winner = self.was_correctly_answered()
 
             if not not_a_winner:
                 break
@@ -200,10 +201,10 @@ from random import randrange
 
 if __name__ == "__main__":
 
-    game = Game()
+    technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
+    game = Game(technoRockQuest)
 
     game.add("Chet")
-    game.add("Pat")
-    game.add("Sue")
+
 
     game.start()
