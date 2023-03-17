@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import random as rnd
 import sys
+sys.path.append( 'python3' )
 
-from python3.utils.ConsoleSpy import ConsoleSpy
+from utils.ConsoleSpy import ConsoleSpy
 
 
 class Game:
@@ -108,20 +110,24 @@ class Game:
 
     # pose une question de la category actuelle
     def _ask_question(self):
+        self.pop_questions.append("Pop Question %s" % self.currentQuestionNumber)
+        self.science_questions.append("Science Question %s" % self.currentQuestionNumber)
+        self.sports_questions.append("Sports Question %s" % self.currentQuestionNumber)
+        if self.technoRockQuest == "y":
+            self.techno_question.append("Techno Question %s" % self.currentQuestionNumber)
+        else:
+            self.rock_questions.append("Rock Question %s" % self.currentQuestionNumber)
+
         if self._current_category == "Pop":
             print(self.pop_questions.pop(0))
-            self.pop_questions.append("Pop Question %s" % self.currentQuestionNumber)
         if self._current_category == "Science":
             print(self.science_questions.pop(0))
-            self.science_questions.append("Science Question %s" % self.currentQuestionNumber)
         if self._current_category == "Sports":
             print(self.sports_questions.pop(0))
-            self.sports_questions.append("Sports Question %s" % self.currentQuestionNumber)
         if self._current_category == "Rock":
             print(self.rock_questions.pop(0))
         if self._current_category == "Techno":
             print(self.techno_question.pop(0))
-            self.techno_question.append("Techno Question %s" % self.currentQuestionNumber)
         self.wantAnswer()
         self.askJoker()
 
@@ -138,23 +144,14 @@ class Game:
     # renvoie la categorie pour la case sur laquelle le joueur est actuellement
     @property
     def _current_category(self):
-        if self.places[self.current_player] == 0:
+        random_per_total_question = rnd.randrange(len(self.pop_questions) + len(self.science_questions) + len(self.sports_questions) + len(self.techno_question) + len(self.rock_questions))
+
+
+        if random_per_total_question < len(self.pop_questions):
             return "Pop"
-        if self.places[self.current_player] == 4:
-            return "Pop"
-        if self.places[self.current_player] == 8:
-            return "Pop"
-        if self.places[self.current_player] == 1:
+        if random_per_total_question < len(self.pop_questions) + len(self.science_questions):
             return "Science"
-        if self.places[self.current_player] == 5:
-            return "Science"
-        if self.places[self.current_player] == 9:
-            return "Science"
-        if self.places[self.current_player] == 2:
-            return "Sports"
-        if self.places[self.current_player] == 6:
-            return "Sports"
-        if self.places[self.current_player] == 10:
+        if random_per_total_question < len(self.pop_questions) + len(self.science_questions) + len(self.sports_questions):
             return "Sports"
         if self.technoRockQuest == "y":
             return "Techno"
@@ -253,9 +250,6 @@ class Game:
                 print("You use the joker so u did't earn any coins")
                 self.use = False
 
-
-import random as rnd
-
 if __name__ == "__main__":
     technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
     log_file = open("log.txt", "w")
@@ -263,8 +257,8 @@ if __name__ == "__main__":
     game = Game(technoRockQuest, spy)
 
     game.add("test")
-    # game.add("test1")
-    # game.add("test2")
+    game.add("test1")
+    game.add("test2")
 
     game.start()
     game.console_spy.stop()
