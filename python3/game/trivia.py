@@ -22,6 +22,7 @@ class Game:
         self.sports_questions = []
         self.rock_questions = []
         self.techno_question = []
+        self.currentQuestionNumber = 50
 
         self.current_player = 0
         self.is_getting_out_of_penalty_box = False
@@ -97,14 +98,19 @@ class Game:
     def _ask_question(self):
         if self._current_category == "Pop":
             print(self.pop_questions.pop(0))
+            self.pop_questions.append("Pop Question %s" % self.currentQuestionNumber)
         if self._current_category == "Science":
             print(self.science_questions.pop(0))
+            self.science_questions.append("Science Question %s" % self.currentQuestionNumber)
         if self._current_category == "Sports":
             print(self.sports_questions.pop(0))
+            self.sports_questions.append("Sports Question %s" % self.currentQuestionNumber)
         if self._current_category == "Rock":
             print(self.rock_questions.pop(0))
+            self.rock_questions.append("Rock Question %s" % self.currentQuestionNumber)
         if self._current_category=="Techno":
             print(self.techno_question.pop(0))
+            self.techno_question.append("Techno Question %s" % self.currentQuestionNumber)
         self.wantAnswer()
         self.askJoker()
 
