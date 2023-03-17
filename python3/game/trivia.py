@@ -3,20 +3,21 @@ import sys
 
 
 class Game:
-    # Initializes the game by creating arrays to keep track of players, their locations, their purses, and whether they are in the penalty box. It also creates arrays of questions for each category and sets the current player to 0.
     # Intialise la game en créant des tableaux pour suivre les joueurs, leurs emplacements,
     # leurs argents, et s'ils sont dans la penalty box.
     # Crée notamment un tableau de questions pour chaque catégorie et mets joueurs actuel à 0
-    joker=False
+    joker = False
+
     def __init__(self, technoRockQuest):
-        self.use=False
-        self.jok=True
- 
+        self.use = False
+        self.jok = True
+
         self.players = []
         self.places = [0] * 6
         self.purses = [0] * 6
         self.in_penalty_box = [0] * 6
-       # self.verifJokeruse(use)
+        self.penalty_box_visits = [0] * 6
+        # self.verifJokeruse(use)
         self.pop_questions = []
         self.science_questions = []
         self.sports_questions = []
@@ -43,7 +44,7 @@ class Game:
 
     # ajoute un joueur avec le nom donné à la partfie
     def add(self, player_name):
-        if self.how_many_players >= 6 :
+        if self.how_many_players >= 6:
             sys.exit("The maximum of players is 6")
 
         self.players.append(player_name)
@@ -69,7 +70,11 @@ class Game:
         print("They have rolled a %s" % roll)
 
         if self.in_penalty_box[self.current_player]:
-            if roll % 2 != 0:
+            # Calculate the probability of getting out of the penalty box
+            prob_get_out = 1 / (self.penalty_box_visits[self.current_player] + 1)
+            rand_num = rnd.random()
+
+            if rand_num <= prob_get_out:
                 self.is_getting_out_of_penalty_box = True
 
                 print("%s is getting out of the penalty box" % self.players[self.current_player])
@@ -103,7 +108,7 @@ class Game:
             print(self.sports_questions.pop(0))
         if self._current_category == "Rock":
             print(self.rock_questions.pop(0))
-        if self._current_category=="Techno":
+        if self._current_category == "Techno":
             print(self.techno_question.pop(0))
         self.wantAnswer()
         self.askJoker()
@@ -114,7 +119,7 @@ class Game:
     def askJoker(self):
         if self.jok == True:
             respons = input("Do you want to use the joker ?")
-            if respons =='y':
+            if respons == "y":
                 self.jok = False
                 self.use = True
 
@@ -139,7 +144,7 @@ class Game:
             return "Sports"
         if self.places[self.current_player] == 10:
             return "Sports"
-        if(self.technoRockQuest=="y"):
+        if self.technoRockQuest == "y":
             return "Techno"
         else:
             return "Rock"
@@ -176,26 +181,22 @@ class Game:
 
             return winner
 
-    
+    # def jokerr(self):
+    #  yes=""
+    # if(self.use==False):
+    #    yes= input("Voulez vous utiliser un joker ?(y/n)")
+    # if(yes=="y"and self.use==False):
+    #    jok=True
+    #    print("Le joker à été utilisé aucun coins sera distribués")
+    #    self.use=True
+    # else :
+    #    jok=False
+    #    self.use=False
+    # return jok
+    #
+    # def jokerUse(self):
 
-
-
-    #def jokerr(self):
-      #  yes=""
-       # if(self.use==False):
-        #    yes= input("Voulez vous utiliser un joker ?(y/n)")
-        #if(yes=="y"and self.use==False):
-        #    jok=True
-        #    print("Le joker à été utilisé aucun coins sera distribués")
-        #    self.use=True
-        #else :
-        #    jok=False
-        #    self.use=False
-        #return jok
-        #
-    #def jokerUse(self):
-       
-#        return self.use
+    #        return self.use
 
     # appelé quand le joueur donne une mauvaise réponse
     # on l'envoie a la penalty box et passe au prochain joueur
@@ -203,6 +204,7 @@ class Game:
         print("Question was incorrectly answered")
         print(self.players[self.current_player] + " was sent to the penalty box")
         self.in_penalty_box[self.current_player] = True
+        self.penalty_box_visits[self.current_player] += 1  # Add this line to increment the number of visits to the penalty box
 
         self.current_player += 1
         if self.current_player == len(self.players):
@@ -222,32 +224,29 @@ class Game:
         not_a_winner = False
         self.can_game_start()
         while True:
-            self.roll(randrange(5) + 1)
-            if self.wantContinue == "n": 
+            self.roll(rnd.randrange(5) + 1)
+            if self.wantContinue == "n":
                 return False
-            elif self.use==False:     
-                    if randrange(9) == 7:
-                        not_a_winner = self.wrong_answer()
-                    else:
-                        not_a_winner = self.was_correctly_answered()
-                    if not not_a_winner:
-                        break
+            elif self.use == False:
+                if rnd.randrange(9) == 7:
+                    not_a_winner = self.wrong_answer()
+                else:
+                    not_a_winner = self.was_correctly_answered()
+                if not not_a_winner:
+                    break
             else:
-                    print("You use the joker so u did't earn any coins")
-                    self.use = False
+                print("You use the joker so u did't earn any coins")
+                self.use = False
 
 
-
-from random import randrange
+import random as rnd
 
 if __name__ == "__main__":
-
     technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
     game = Game(technoRockQuest)
 
     game.add("test")
     game.add("test1")
     game.add("test2")
-
 
     game.start()
