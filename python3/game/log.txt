@@ -2,8 +2,6 @@ test was added
 They are player number 1
 test1 was added
 They are player number 2
-test2 was added
-They are player number 3
 test is the current player
 They have rolled a 5
 test's new location is 5
@@ -11,8 +9,22 @@ The category is Science
 Science Question 0
 Do you want to anwser ? (y/n) Do you want to use the joker ?You use the joker so u did't earn any coins
 test is the current player
-They have rolled a 1
-test's new location is 6
-The category is Sports
-Sports Question 0
+They have rolled a 3
+test's new location is 8
+The category is Pop
+Pop Question 0
+Do you want to anwser ? (y/n) Answer was corrent!!!!
+test now has 1 Gold Coins.
+test1 is the current player
+They have rolled a 4
+test1's new location is 4
+The category is Pop
+Pop Question 1
+Do you want to anwser ? (y/n) Answer was corrent!!!!
+test1 now has 1 Gold Coins.
+test is the current player
+They have rolled a 5
+test's new location is 1
+The category is Science
+Science Question 1
 Do you want to anwser ? (y/n) 
