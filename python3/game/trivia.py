@@ -50,6 +50,9 @@ class Game:
     # ajoute un joueur avec le nom donné à la partfie
     def add(self, player_name):
         if self.how_many_players >= 6:
+            print("The maximum of players is 6")
+            self.console_spy.stop()
+            self.console_spy.log_file.close()
             sys.exit("The maximum of players is 6")
 
         self.players.append(player_name)
