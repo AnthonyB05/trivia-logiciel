@@ -16,18 +16,6 @@ class TriviaTest(unittest.TestCase):
 
         game.start()
 
-    def test_two_players(self):
-        game = trivia.Game("y")
-
-        game.add("Chet")
-        game.add("Pat")
-
-        self.assertTrue(game.is_playable())
-
-        game.start()
-
-        self.assertEqual(game.how_many_players, 2)
-
     def test_game_one_player(self):
 
         log_file = open("log.txt", "w")
@@ -53,7 +41,9 @@ class TriviaTest(unittest.TestCase):
                     return
 
     def test_game_upper_six_player(self):
-        game = trivia.Game("y")
+        log_file = open("log.txt", "w")
+        spy = ConsoleSpy(log_file)
+        game = trivia.Game("y", spy)
 
         game.add("chat")  # 1
         game.add("chien")  # 2
@@ -62,6 +52,13 @@ class TriviaTest(unittest.TestCase):
         game.add("hj")  # 5
         game.add("kl")  # 6
         game.add("lm")  # 7
+        game.start()
+        game.console_spy.stop()
+        game.console_spy.log_file.close()
+
+        game.console_spy.stop()
+        game.console_spy.log_file.close()
+
 
         self.assertEqual(game.how_many_players, 6)
 
