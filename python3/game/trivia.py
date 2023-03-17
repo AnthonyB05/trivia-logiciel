@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import sys
 
+from python3.utils.ConsoleSpy import ConsoleSpy
+
 
 class Game:
     # Intialise la game en créant des tableaux pour suivre les joueurs, leurs emplacements,
@@ -8,7 +10,10 @@ class Game:
     # Crée notamment un tableau de questions pour chaque catégorie et mets joueurs actuel à 0
     joker = False
 
-    def __init__(self, technoRockQuest):
+    def __init__(self, technoRockQuest, ConsoleSpy):
+        self.log_file = open("log.txt", "w")
+        self.console_spy = ConsoleSpy(self.log_file)
+        self.console_spy.start()
         self.use = False
         self.jok = True
 
@@ -23,6 +28,7 @@ class Game:
         self.sports_questions = []
         self.rock_questions = []
         self.techno_question = []
+        self.currentQuestionNumber = 50
 
         self.current_player = 0
         self.is_getting_out_of_penalty_box = False
@@ -102,14 +108,18 @@ class Game:
     def _ask_question(self):
         if self._current_category == "Pop":
             print(self.pop_questions.pop(0))
+            self.pop_questions.append("Pop Question %s" % self.currentQuestionNumber)
         if self._current_category == "Science":
             print(self.science_questions.pop(0))
+            self.science_questions.append("Science Question %s" % self.currentQuestionNumber)
         if self._current_category == "Sports":
             print(self.sports_questions.pop(0))
+            self.sports_questions.append("Sports Question %s" % self.currentQuestionNumber)
         if self._current_category == "Rock":
             print(self.rock_questions.pop(0))
         if self._current_category == "Techno":
             print(self.techno_question.pop(0))
+            self.techno_question.append("Techno Question %s" % self.currentQuestionNumber)
         self.wantAnswer()
         self.askJoker()
 
@@ -218,6 +228,9 @@ class Game:
     # Vérifie que le nombre de joueurs est supérieur à 1
     def can_game_start(self):
         if not self.is_playable():
+            print("The game doesn't have at least 2 players")
+            self.console_spy.stop()
+            self.log_file.close()
             sys.exit("The game doesn't have at least 2 players")
 
     def start(self):
@@ -243,10 +256,22 @@ import random as rnd
 
 if __name__ == "__main__":
     technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
-    game = Game(technoRockQuest)
+    game = Game(technoRockQuest, ConsoleSpy)
 
     game.add("test")
     game.add("test1")
     game.add("test2")
 
     game.start()
+    game.console_spy.stop()
+    game.log_file.close()
+
+    # exemple d'utilisation
+    # log_file = open("log.txt", "w")
+    # spy = ConsoleSpy(log_file)
+    # spy.start()
+    #
+    # print("Hello")  # affiche "Hello World" sur la console et écrit "Hello World" dans le fichier log.txt
+    #
+    # spy.stop()
+    # log_file.close()
