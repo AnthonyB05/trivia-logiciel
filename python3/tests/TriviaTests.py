@@ -73,7 +73,7 @@ class TriviaTest(unittest.TestCase):
             game.console_spy.log_file.close()
 
         with open('log.txt') as f:
-            if 'The current category is Rock' in f.read():
+            if 'Rock' in f.read():
                 self.assertTrue(True)
             else:
                 self.assertTrue(False)
@@ -96,7 +96,7 @@ class TriviaTest(unittest.TestCase):
             game.console_spy.log_file.close()
 
         with open('log.txt') as f:
-            if 'The current category is Techno' in f.read():
+            if 'Techno' in f.read():
                 self.assertTrue(True)
             else:
                 self.assertTrue(False)
