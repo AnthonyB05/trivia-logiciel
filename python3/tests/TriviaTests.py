@@ -17,7 +17,6 @@ class TriviaTest(unittest.TestCase):
         game.start()
 
     def test_game_one_player(self):
-
         log_file = open("log.txt", "w")
         spy = ConsoleSpy(log_file)
         game = Game("y", spy)
@@ -33,50 +32,80 @@ class TriviaTest(unittest.TestCase):
             game.console_spy.log_file.close()
 
         with open('log.txt') as f:
-            line = f.readline()
-            while line:
-                line = f.readline()
-                if line == "The game doesn't have at least 2 players":
-                    self.assertTrue(True)
-                    return
+            if "The game doesn't have at least 2 players" in f.read():
+                self.assertTrue(True)
+            else:
+                self.assertTrue(False)
 
-    def test_game_upper_six_player(self):
+    def test_game_upper_seven_player(self):
         log_file = open("log.txt", "w")
         spy = ConsoleSpy(log_file)
         game = trivia.Game("y", spy)
 
-        game.add("chat")  # 1
-        game.add("chien")  # 2
-        game.add("ch")  # 3
-        game.add("nb")  # 4
-        game.add("hj")  # 5
-        game.add("kl")  # 6
-        game.add("lm")  # 7
-        game.start()
-        game.console_spy.stop()
-        game.console_spy.log_file.close()
+        try:
+            game.add("chat")  # 1
+            game.add("chien")  # 2
+            game.add("ch")  # 3
+            game.add("nb")  # 4
+            game.add("hj")  # 5
+            game.add("kl")  # 6
+            game.add("lm")  # 7
+            game.start()
+            game.console_spy.stop()
+            game.console_spy.log_file.close()
 
-        game.console_spy.stop()
-        game.console_spy.log_file.close()
+        except:
+            game.console_spy.stop()
+            game.console_spy.log_file.close()
 
-
-        self.assertEqual(game.how_many_players, 6)
+        with open('log.txt') as f:
+            if 'The maximum of players is 6' in f.read():
+                self.assertTrue(True)
+            else:
+                self.assertTrue(False)
 
     def test_game_rock_question(self):
-        game = trivia.Game("n")
+        log_file = open("log.txt", "w")
+        spy = ConsoleSpy(log_file)
+        game = Game("n", spy)
+        try:
+            game.add("Chet")
+            game.add("Pat")
+            # game.start()
+            game.console_spy.stop()
+            game.console_spy.log_file.close()
 
-        game.add("Chet")
-        game.add("Pat")
+        except:
+            game.console_spy.stop()
+            game.console_spy.log_file.close()
 
-        self.assertTrue(len(game.rock_questions) > 0)
+        with open('log.txt') as f:
+            if 'The current category is Rock' in f.read():
+                self.assertTrue(True)
+            else:
+                self.assertTrue(False)
+
 
     def test_game_techno_question(self):
-        game = trivia.Game("y")
+        log_file = open("log.txt", "w")
+        spy = ConsoleSpy(log_file)
+        game = Game("y", spy)
+        try:
+            game.add("Chet")
+            game.add("Pat")
+            game.start()
+            game.console_spy.stop()
+            game.console_spy.log_file.close()
 
-        game.add("Chet")
-        game.add("Pat")
+        except:
+            game.console_spy.stop()
+            game.console_spy.log_file.close()
 
-        self.assertTrue(len(game.techno_question) > 0)
+        with open('log.txt') as f:
+            if 'The current category is Techno' in f.read():
+                self.assertTrue(True)
+            else:
+                self.assertTrue(False)
 
 
 if __name__ == '__main__':
