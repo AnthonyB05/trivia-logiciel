@@ -11,8 +11,7 @@ class Game:
     # Crée notamment un tableau de questions pour chaque catégorie et mets joueurs actuel à 0
     joker=False
     def __init__(self, technoRockQuest, ConsoleSpy):
-        self.log_file = open("log.txt", "w")
-        self.console_spy = ConsoleSpy(self.log_file)
+        self.console_spy = ConsoleSpy
         self.console_spy.start()
         self.use=False
         self.jok=True
@@ -229,7 +228,7 @@ class Game:
         if not self.is_playable():
             print("The game doesn't have at least 2 players")
             self.console_spy.stop()
-            self.log_file.close()
+            self.console_spy.log_file.close()
             sys.exit("The game doesn't have at least 2 players")
 
     def start(self):
@@ -257,16 +256,18 @@ from random import randrange
 if __name__ == "__main__":
 
     technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
-    game = Game(technoRockQuest, ConsoleSpy)
+    log_file = open("log.txt", "w")
+    spy = ConsoleSpy(log_file)
+    game = Game(technoRockQuest, spy)
 
     game.add("test")
-    game.add("test1")
-    game.add("test2")
+    # game.add("test1")
+    # game.add("test2")
 
 
     game.start()
     game.console_spy.stop()
-    game.log_file.close()
+    game.console_spy.log_file.close()
 
     # exemple d'utilisation
     # log_file = open("log.txt", "w")
