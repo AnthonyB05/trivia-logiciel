@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
+import random as rnd
 import sys
 
-#from python3.utils.ConsoleSpy import ConsoleSpy
-from utils import ConsoleSpy
+from python3.utils.ConsoleSpy import ConsoleSpy
+
+# sys.path.append( 'python3' )
+#
+# from utils.ConsoleSpy import ConsoleSpy
 
 
 class Game:
@@ -18,6 +22,10 @@ class Game:
         self.jok = True
 
         self.players = []
+        self.exitPlayers = []
+        self.first_winner = None
+        self.second_winner = None
+        self.third_winner = None
         self.places = [0] * 6
         self.purses = [0] * 6
         self.in_penalty_box = [0] * 6
@@ -109,6 +117,14 @@ class Game:
 
     # pose une question de la category actuelle
     def _ask_question(self):
+        self.pop_questions.append("Pop Question %s" % self.currentQuestionNumber)
+        self.science_questions.append("Science Question %s" % self.currentQuestionNumber)
+        self.sports_questions.append("Sports Question %s" % self.currentQuestionNumber)
+        if self.technoRockQuest == "y":
+            self.techno_question.append("Techno Question %s" % self.currentQuestionNumber)
+        else:
+            self.rock_questions.append("Rock Question %s" % self.currentQuestionNumber)
+
         if self._current_category == "Pop":
             print(self.pop_questions.pop(0))
             self.pop_questions.append("Pop Question %s" % self.currentQuestionNumber)
@@ -139,28 +155,35 @@ class Game:
     # renvoie la categorie pour la case sur laquelle le joueur est actuellement
     @property
     def _current_category(self):
-        if self.places[self.current_player] == 0:
+        random_per_total_question = rnd.randrange(len(self.pop_questions) + len(self.science_questions) + len(self.sports_questions) + len(self.techno_question) + len(self.rock_questions))
+
+
+        if random_per_total_question < len(self.pop_questions):
             return "Pop"
-        if self.places[self.current_player] == 4:
-            return "Pop"
-        if self.places[self.current_player] == 8:
-            return "Pop"
-        if self.places[self.current_player] == 1:
+        if random_per_total_question < len(self.pop_questions) + len(self.science_questions):
             return "Science"
-        if self.places[self.current_player] == 5:
-            return "Science"
-        if self.places[self.current_player] == 9:
-            return "Science"
-        if self.places[self.current_player] == 2:
-            return "Sports"
-        if self.places[self.current_player] == 6:
-            return "Sports"
-        if self.places[self.current_player] == 10:
+        if random_per_total_question < len(self.pop_questions) + len(self.science_questions) + len(self.sports_questions):
             return "Sports"
         if self.technoRockQuest == "y":
             return "Techno"
         else:
             return "Rock"
+
+
+    def next_player(self):
+        if len(self.exitPlayers) == len(self.players):
+            return
+
+        self.current_player += 1
+        if self.current_player == len(self.players):
+            self.current_player = 0
+
+        while self.current_player in self.exitPlayers:
+            self.current_player += 1
+            if self.current_player == len(self.players):
+                self.current_player = 0
+
+
 
     # appelé quand une question a été répondu correctement, met à jour la bourse du joueur et vérifie s'il a gagné la partie
     def was_correctly_answered(self):
@@ -171,16 +194,18 @@ class Game:
                 print(self.players[self.current_player] + " now has " + str(self.purses[self.current_player]) + " Gold Coins.")
 
                 winner = self._did_player_win()
-                self.current_player += 1
-                if self.current_player == len(self.players):
-                    self.current_player = 0
 
-                return winner
+                self.next_player()
+
+                if winner:
+                    return None
+                else:
+                    self.exitPlayers.append(self.current_player)
+                    return self.current_player
+
             else:
-                self.current_player += 1
-                if self.current_player == len(self.players):
-                    self.current_player = 0
-                return True
+                self.next_player()
+                return None
 
         else:
             print("Answer was corrent!!!!")
@@ -188,28 +213,30 @@ class Game:
             print(self.players[self.current_player] + " now has " + str(self.purses[self.current_player]) + " Gold Coins.")
 
             winner = self._did_player_win()
-            self.current_player += 1
-            if self.current_player == len(self.players):
-                self.current_player = 0
+            self.next_player()
 
-            return winner
+            if winner:
+                return None
+            else:
+                self.exitPlayers.append(self.current_player)
+                return self.current_player
 
-    # def jokerr(self):
-    #  yes=""
-    # if(self.use==False):
-    #    yes= input("Voulez vous utiliser un joker ?(y/n)")
-    # if(yes=="y"and self.use==False):
-    #    jok=True
-    #    print("Le joker à été utilisé aucun coins sera distribués")
-    #    self.use=True
-    # else :
-    #    jok=False
-    #    self.use=False
-    # return jok
-    #
-    # def jokerUse(self):
+    #def jokerr(self):
+      #  yes=""
+       # if(self.use==False):
+        #    yes= input("Voulez vous utiliser un joker ?(y/n)")
+        #if(yes=="y"and self.use==False):
+        #    jok=True
+        #    print("Le joker à été utilisé aucun coins sera distribués")
+        #    self.use=True
+        #else :
+        #    jok=False
+        #    self.use=False
+        #return jok
+        #
+    #def jokerUse(self):
 
-    #        return self.use
+#        return self.use
 
     # appelé quand le joueur donne une mauvaise réponse
     # on l'envoie a la penalty box et passe au prochain joueur
@@ -219,10 +246,7 @@ class Game:
         self.in_penalty_box[self.current_player] = True
         self.penalty_box_visits[self.current_player] += 1  # Add this line to increment the number of visits to the penalty box
 
-        self.current_player += 1
-        if self.current_player == len(self.players):
-            self.current_player = 0
-        return True
+        self.next_player()
 
     # renvoie vrai si le joueur a gagné
     def _did_player_win(self):
@@ -237,40 +261,55 @@ class Game:
             sys.exit("The game doesn't have at least 2 players")
 
     def start(self):
-        not_a_winner = False
+
         self.can_game_start()
         while True:
             self.roll(rnd.randrange(5) + 1)
             if self.wantContinue == "n":
-                return False
-            elif self.use == False:
-                if rnd.randrange(9) == 7:
-                    not_a_winner = self.wrong_answer()
+                self.exitPlayers.append(self.current_player)
+                self.current_player += 1
+                if self.current_player == len(self.players):
+                    self.current_player = 0
+                self.wantContinue = "y"
+
+            elif self.current_player not in self.exitPlayers:
+                if self.use == False:
+                    # simulation de lancé de dés
+                    if rnd.randrange(9) == 7:
+                        self.wrong_answer()
+
+                    elif self.first_winner is None:
+                        self.first_winner = self.was_correctly_answered()
+                    # elif self.second_winner is None:
+                    #     self.second_winner = self.was_correctly_answered()
+                    # elif self.third_winner is None:
+                    #     self.third_winner = self.was_correctly_answered()
+
+                    if self.first_winner is not None:
+                        print("")
+                        print("First Winner is " + self.players[self.first_winner])
+                        # print("Second Winner is " + self.players[self.second_winner])
+                        # print("Third Winner is " + self.players[self.third_winner])
+
+                        break
+
                 else:
-                    not_a_winner = self.was_correctly_answered()
-                if not not_a_winner:
-                    break
-            else:
-                print("You use the joker so u did't earn any coins")
-                self.use = False
-
-
-import random as rnd
+                    print("You use the joker so u did't earn any coins")
+                    self.use = False
 
 if __name__ == "__main__":
+
     technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
     log_file = open("log.txt", "w")
     spy = ConsoleSpy(log_file)
     game = Game(technoRockQuest, spy)
 
-    game.add("test")
-    game.add("test1")
-    # game.add("test2")
-    # game.add("test3")
-    # game.add("test4")
-    # game.add("test5")
-    # game.add("test6")
-    # game.add("test7")
+    game.add("SO")
+    game.add("Ak")
+    game.add("JO")
+    game.add("AN")
+
+
     game.start()
     game.console_spy.stop()
     game.console_spy.log_file.close()
