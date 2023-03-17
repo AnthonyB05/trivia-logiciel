@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import sys
 
+from python3.utils.ConsoleSpy import ConsoleSpy
+
 
 class Game:
     # Initializes the game by creating arrays to keep track of players, their locations, their purses, and whether they are in the penalty box. It also creates arrays of questions for each category and sets the current player to 0.
@@ -8,7 +10,10 @@ class Game:
     # leurs argents, et s'ils sont dans la penalty box.
     # Crée notamment un tableau de questions pour chaque catégorie et mets joueurs actuel à 0
     joker=False
-    def __init__(self, technoRockQuest):
+    def __init__(self, technoRockQuest, ConsoleSpy):
+        self.log_file = open("log.txt", "w")
+        self.console_spy = ConsoleSpy(self.log_file)
+        self.console_spy.start()
         self.use=False
         self.jok=True
  
@@ -216,6 +221,9 @@ class Game:
     # Vérifie que le nombre de joueurs est supérieur à 1
     def can_game_start(self):
         if not self.is_playable():
+            print("The game doesn't have at least 2 players")
+            self.console_spy.stop()
+            self.log_file.close()
             sys.exit("The game doesn't have at least 2 players")
 
     def start(self):
@@ -243,7 +251,7 @@ from random import randrange
 if __name__ == "__main__":
 
     technoRockQuest = input("Do you want a techno question insted a rock question ? (y/n)")
-    game = Game(technoRockQuest)
+    game = Game(technoRockQuest, ConsoleSpy)
 
     game.add("test")
     game.add("test1")
@@ -251,3 +259,15 @@ if __name__ == "__main__":
 
 
     game.start()
+    game.console_spy.stop()
+    game.log_file.close()
+
+    # exemple d'utilisation
+    # log_file = open("log.txt", "w")
+    # spy = ConsoleSpy(log_file)
+    # spy.start()
+    #
+    # print("Hello")  # affiche "Hello World" sur la console et écrit "Hello World" dans le fichier log.txt
+    #
+    # spy.stop()
+    # log_file.close()
