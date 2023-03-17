@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
+import random as rnd
 import sys
-sys.path.append( 'python3' )
 
-from utils.ConsoleSpy import ConsoleSpy
+from python3.utils.ConsoleSpy import ConsoleSpy
+
+# sys.path.append( 'python3' )
+#
+# from utils.ConsoleSpy import ConsoleSpy
 
 
 class Game:
