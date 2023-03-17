@@ -46,6 +46,10 @@ namespace Trivia
 
         public bool Add(string playerName)
         {
+            if (HowManyPlayers() >= 6) {
+                throw new IndexOutOfRangeException();
+            }
+
             _players.Add(playerName);
             _places[HowManyPlayers()] = 0;
             _purses[HowManyPlayers()] = 0;

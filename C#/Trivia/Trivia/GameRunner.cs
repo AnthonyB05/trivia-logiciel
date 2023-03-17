@@ -16,6 +16,10 @@ namespace Trivia
 
             var rand = new Random();
 
+            if (aGame.HowManyPlayers() < 2) {
+                throw new IndexOutOfRangeException();
+            }
+
             do
             {
                 aGame.Roll(rand.Next(5) + 1);
