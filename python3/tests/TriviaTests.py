@@ -8,14 +8,6 @@ from python3.utils.ConsoleSpy import ConsoleSpy
 
 class TriviaTest(unittest.TestCase):
 
-    def test_game(self):
-        game = trivia.Game("y")
-
-        game.add("Chet")
-        game.add("Pat")
-
-        game.start()
-
     def test_game_one_player(self):
         log_file = open("log.txt", "w")
         spy = ConsoleSpy(log_file)
@@ -71,7 +63,8 @@ class TriviaTest(unittest.TestCase):
         try:
             game.add("Chet")
             game.add("Pat")
-            # game.start()
+            game.add("Toto")
+            game.start()
             game.console_spy.stop()
             game.console_spy.log_file.close()
 
@@ -93,6 +86,7 @@ class TriviaTest(unittest.TestCase):
         try:
             game.add("Chet")
             game.add("Pat")
+            game.add("Toto")
             game.start()
             game.console_spy.stop()
             game.console_spy.log_file.close()

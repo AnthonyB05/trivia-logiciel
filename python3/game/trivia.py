@@ -52,7 +52,7 @@ class Game:
             else:
                 self.rock_questions.append("Rock Question %s" % i)
 
-    # TODO : méthode inutile
+
     def is_playable(self):
         return self.how_many_players >= 2
 
@@ -140,7 +140,7 @@ class Game:
             print(self.techno_question.pop(0))
             self.techno_question.append("Techno Question %s" % self.currentQuestionNumber)
         self.wantAnswer()
-        self.askJoker()
+        #self.askJoker()
 
     def wantAnswer(self):
         self.wantContinue = input("Do you want to anwser ? (y/n) ")
@@ -271,7 +271,9 @@ class Game:
                 if self.current_player == len(self.players):
                     self.current_player = 0
                 self.wantContinue = "y"
-
+                if len(self.players) - 1 == len(self.exitPlayers):
+                    print("Plus assez de joueur pour continuer")
+                    break
             elif self.current_player not in self.exitPlayers:
                 if self.use == False:
                     # simulation de lancé de dés
@@ -291,6 +293,10 @@ class Game:
                         # print("Second Winner is " + self.players[self.second_winner])
                         # print("Third Winner is " + self.players[self.third_winner])
 
+                        break
+
+                    if len(self.players)-1 == len(self.exitPlayers):
+                        print("Plus assez de joueur pour continuer")
                         break
 
                 else:
